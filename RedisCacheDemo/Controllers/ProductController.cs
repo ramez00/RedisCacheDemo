@@ -4,9 +4,9 @@ using RedisCacheDemo.Services;
 namespace RedisCacheDemo.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(ProductService productService) : ControllerBase
+public class ProductController(IProductService productService) : ControllerBase
 {
-    private readonly ProductService _productService = productService;
+    private readonly IProductService _productService = productService;
 
     [HttpGet]
     public async Task<IActionResult> GetAll()
