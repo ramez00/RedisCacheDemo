@@ -1,8 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using RedisCacheDemo.Models;
-
+﻿
 namespace RedisCacheDemo.Controllers;
 [Route("api/[controller]")]
 [ApiController]
