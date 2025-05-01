@@ -3,3 +3,4 @@ global using RedisCacheDemo.Models;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using RedisCacheDemo.Services;
+global using RedisCacheDemo.Caching;

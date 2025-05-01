@@ -1,6 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using RedisCacheDemo.Models;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +14,14 @@ var connectionString = builder.Configuration.GetConnectionString("DefualtConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "ProductRedis";
+});
+
+builder.Services.AddSingleton<ICacheService, CacheService>();
 
 var app = builder.Build();
 
