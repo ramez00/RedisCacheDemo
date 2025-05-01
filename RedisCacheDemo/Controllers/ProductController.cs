@@ -1,41 +1,42 @@
 ﻿
+using RedisCacheDemo.Services;
+
 namespace RedisCacheDemo.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class ProductController(ApplicationDbContext dbContext) : ControllerBase
+public class ProductController(ProductService productService) : ControllerBase
 {
-    private readonly ApplicationDbContext _dbContext = dbContext;
+    private readonly ProductService _productService = productService;
 
-    [HttpGet("products")]
-    public IEnumerable<Product> Get()
+    [HttpGet]
+    public async Task<IActionResult> GetAll()
     {
-        var data = _dbContext.Products.ToList();
-        return data;
+       var products = await _productService.GetAll();
+
+        return Ok(products);
     }
-    [HttpGet("product")]
-    public Product? Get(int id)
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById(int id)
     {
-        var data = _dbContext.Products.Where(x => x.id == id).FirstOrDefault();
-        return data;
+        return Ok(await _productService.GetById(id));
     }
-    [HttpPost("addproduct")]
-    public async Task<Product> Post(Product value)
+
+    [HttpPost]
+    public async Task<IActionResult> AddNew([FromBody] Product Product)
     {
-        var obj = await _dbContext.Products.AddAsync(value);
-        _dbContext.SaveChanges();
-        return obj.Entity;
+        return Ok(await _productService.AddNew(Product));
     }
-    [HttpPut("updateproduct")]
-    public void Put(Product product)
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, [FromBody] Product Product)
     {
-        _dbContext.Products.Update(product);
-        _dbContext.SaveChanges();
+        return Ok(await _productService.Update(id, Product));
     }
-    [HttpDelete("deleteproduct")]
-    public void Delete(int Id)
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(int id)
     {
-        var filteredData = _dbContext.Products.Where(x => x.id == Id).FirstOrDefault();
-        _dbContext.Remove(filteredData);
-        _dbContext.SaveChanges();
+        return Ok(await _productService.Delete(id));
     }
 }
